@@ -1,5 +1,5 @@
 #include "raylib.h"
-#include "board/board.c"
+#include "board/board.h"
 
 int main()
 {
