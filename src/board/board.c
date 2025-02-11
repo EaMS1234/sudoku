@@ -3,13 +3,30 @@
 
 void draw_board(int table[9][9], Vector2 origin);
 
-char label[] = "\0";
+// std is for moving and selecting numbers on the board.
+// entry is for inputing numbers on the board.
+enum state
+{
+    std = 0,
+    entry = 1
+};
 
+char label[] = "\0";
 Vector2 position = {.x = -1, .y = -1};
 
 void draw_board(int table[9][9], Vector2 origin)
 {
-    // Key Inputs =============================================================
+    // Key Inputs =========================================================
+    if (position.x == -1)
+    {
+        if (IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_RIGHT))
+        {
+            HideCursor();
+            position.x = 4;
+            position.y = 4;
+        }
+    }
+
     if (IsKeyPressed(KEY_LEFT) && position.x >= 1)
     {
         HideCursor();
@@ -33,17 +50,28 @@ void draw_board(int table[9][9], Vector2 origin)
         HideCursor();
         position.y++;
     }
-    // Key inputs =============================================================
+
+    int n = GetKeyPressed();
+
+    if (n == KEY_BACKSPACE)
+    {
+        table[(int)position.x][(int)position.y] = 0;
+    }
+    else if (n >= 49 && n <= 57)
+    {
+        table[(int)position.x][(int)position.y] = n - 48;
+    }
+    // Key inputs =========================================================
 
     // Draws the position rectangle before everything else
     // to prevent it from occluding other stuff. It's also outside
     // of the loops for this same reason.
-    if (position.x != -1 && position.y != -1)
+    if (position.x != -1)
     {
         DrawRectangle((origin.x + 3) + (45 * position.x), (origin.y + 3) + (45 * position.y), 40, 40, LIGHTGRAY);
     }
 
-    // Mouse input
+    // Mouse inputs =======================================================
     if (GetMouseDelta().x != 0 && GetMouseDelta().y != 0)
     {
         ShowCursor();
@@ -53,6 +81,7 @@ void draw_board(int table[9][9], Vector2 origin)
         position.x = -1;
         position.y = -1;
     }
+    // Mouse inputs =======================================================
 
     // Draws the board on the screen
     for (int i = 0; i < 9; i++)
@@ -69,8 +98,16 @@ void draw_board(int table[9][9], Vector2 origin)
                 }
             }
 
-            label[0] = (char)(48 + table[i][j]);
-            DrawText(label, (origin.x + 16) + (45 * i), (origin.y + 13) + (45 * j), 24, BLACK);
+            if (table[i][j] != 0)
+            {
+                if (table[i][j] == table[(int)position.x][(int)position.y] && (i != position.x && j != position.y))
+                {
+                    DrawRectangle((origin.x + 3) + (45 * i), (origin.y + 3) + (45 * j), 40, 40, BEIGE);
+                }
+
+                label[0] = (char)(48 + table[i][j]);
+                DrawText(label, (origin.x + 16) + (45 * i), (origin.y + 13) + (45 * j), 24, BLACK);
+            }
         }
     }
 
