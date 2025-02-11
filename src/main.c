@@ -25,25 +25,6 @@ int main()
         BeginDrawing();
         ClearBackground(WHITE);
 
-        if (IsCursorHidden())
-        {
-            // TODO: use arrow keys to navigate the game
-
-            // Goes back to "mouse mode"
-            if (GetMouseDelta().x != 0 && GetMouseDelta().y != 0)
-            {
-                ShowCursor();
-            }
-        }
-        else
-        {
-            // TODO: if a key is used, it should disable the mouse input
-            if(IsKeyDown(KEY_SPACE))
-            {
-                HideCursor();
-            }
-        }
-
         draw_board(sudoku_table, origin);
 
         EndDrawing();

@@ -1,11 +1,59 @@
 #include "raylib.h"
+#include <stdio.h>
 
 void draw_board(int table[9][9], Vector2 origin);
 
 char label[] = "\0";
 
+Vector2 position = {.x = -1, .y = -1};
+
 void draw_board(int table[9][9], Vector2 origin)
 {
+    // Key Inputs =============================================================
+    if (IsKeyPressed(KEY_LEFT) && position.x >= 1)
+    {
+        HideCursor();
+        position.x--;
+    }
+
+    if (IsKeyPressed(KEY_RIGHT) && position.x <= 7 && position.x != -1)
+    {
+        HideCursor();
+        position.x++;
+    }
+
+    if (IsKeyPressed(KEY_UP) && position.y >= 1)
+    {
+        HideCursor();
+        position.y--;
+    }
+
+    if (IsKeyPressed(KEY_DOWN) && position.y <= 7 && position.y != -1)
+    {
+        HideCursor();
+        position.y++;
+    }
+    // Key inputs =============================================================
+
+    // Draws the position rectangle before everything else
+    // to prevent it from occluding other stuff. It's also outside
+    // of the loops for this same reason.
+    if (position.x != -1 && position.y != -1)
+    {
+        DrawRectangle((origin.x + 3) + (45 * position.x), (origin.y + 3) + (45 * position.y), 40, 40, LIGHTGRAY);
+    }
+
+    // Mouse input
+    if (GetMouseDelta().x != 0 && GetMouseDelta().y != 0)
+    {
+        ShowCursor();
+
+        // Resets the position when mouse movement is detected.
+        // This makes sure the position is correct in the next frame
+        position.x = -1;
+        position.y = -1;
+    }
+
     // Draws the board on the screen
     for (int i = 0; i < 9; i++)
     {
@@ -14,12 +62,10 @@ void draw_board(int table[9][9], Vector2 origin)
             if (!IsCursorHidden())
             {
                 // Draws a box behind around the number the mouse is over
-                if (GetMouseX() <= (origin.x + 43 + (45 * i))
-                    && GetMouseX() >= (origin.x + 3 + (45 * i))
-                    && GetMouseY() <= (origin.y + 43 + (45 * j))
-                    && GetMouseY() >= (origin.y + 3 + (45 * j)))
+                if (GetMouseX() <= (origin.x + 43 + (45 * i)) && GetMouseX() >= (origin.x + 3 + (45 * i)) && GetMouseY() <= (origin.y + 43 + (45 * j)) && GetMouseY() >= (origin.y + 3 + (45 * j)))
                 {
-                    DrawRectangle((origin.x + 3) + (45 * i), (origin.y + 3) + (45 * j), 40, 40, BLUE);
+                    position.x = i;
+                    position.y = j;
                 }
             }
 
@@ -28,6 +74,7 @@ void draw_board(int table[9][9], Vector2 origin)
         }
     }
 
+    // 3x3 big grid
     DrawRectangle((origin.x + 134), origin.y, 3, 405, DARKGRAY);
     DrawRectangle((origin.x + 269), origin.y, 3, 405, DARKGRAY);
     DrawRectangle(origin.x, (origin.y + 134), 405, 3, DARKGRAY);
