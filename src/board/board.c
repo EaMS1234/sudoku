@@ -68,7 +68,7 @@ void draw_board(int table[9][9], Vector2 origin)
     // of the loops for this same reason.
     if (position.x != -1)
     {
-        DrawRectangle((origin.x + 3) + (45 * position.x), (origin.y + 3) + (45 * position.y), 40, 40, LIGHTGRAY);
+        DrawRectangle((origin.x + 3) + (45 * position.x), (origin.y + 3) + (45 * position.y), 40, 40, SKYBLUE);
     }
 
     // Mouse inputs =======================================================
@@ -100,9 +100,17 @@ void draw_board(int table[9][9], Vector2 origin)
 
             if (table[i][j] != 0)
             {
-                if (table[i][j] == table[(int)position.x][(int)position.y] && (i != position.x && j != position.y))
+                // Verifies for repeated numbers
+                if (table[i][j] == table[(int)position.x][(int)position.y] && (i != position.x || j != position.y))
                 {
-                    DrawRectangle((origin.x + 3) + (45 * i), (origin.y + 3) + (45 * j), 40, 40, BEIGE);
+                    // Highlights the repeated numbers
+                    DrawRectangle((origin.x + 3) + (45 * i), (origin.y + 3) + (45 * j), 40, 40, LIGHTGRAY);
+                
+                    // Marks the numbers which violate the rules
+                    if ((position.x == i || position.y == j))
+                    {
+                        DrawRectangle((origin.x + 3) + (45 * i), (origin.y + 3) + (45 * j), 40, 40, MAROON);
+                    }
                 }
 
                 label[0] = (char)(48 + table[i][j]);
