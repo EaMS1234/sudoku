@@ -17,6 +17,9 @@ int main()
         }
     }
 
+    // Origin of the table
+    Vector2 origin = {.x = 42, .y = 42};
+
     while (!WindowShouldClose())
     {
         BeginDrawing();
@@ -41,7 +44,7 @@ int main()
             }
         }
 
-        draw_board(sudoku_table);
+        draw_board(sudoku_table, origin);
 
         EndDrawing();
     }
