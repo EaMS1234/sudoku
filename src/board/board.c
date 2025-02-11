@@ -107,7 +107,7 @@ void draw_board(int table[9][9], Vector2 origin)
                     DrawRectangle((origin.x + 3) + (45 * i), (origin.y + 3) + (45 * j), 40, 40, LIGHTGRAY);
                 
                     // Marks the numbers which violate the rules
-                    if ((position.x == i || position.y == j))
+                    if ((position.x == i || position.y == j) || ((int)position.x / 3 == i / 3 && (int)position.y / 3 == j / 3))
                     {
                         DrawRectangle((origin.x + 3) + (45 * i), (origin.y + 3) + (45 * j), 40, 40, MAROON);
                     }
