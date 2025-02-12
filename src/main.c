@@ -1,5 +1,6 @@
 #include "raylib.h"
 #include "board/board.h"
+#include "sudoku/sudoku.h"
 
 int main()
 {
@@ -8,14 +9,8 @@ int main()
 
     int sudoku_table[9][9];  // represents the number in each position of the board
 
-    // Initializes the table with zeroes
-    for (int i = 0; i < 9; i++)
-    {
-        for (int j = 0; j < 9; j++)
-        {
-            sudoku_table[i][j] = 0;
-        }
-    }
+    // Initializes the table
+    fill_table(sudoku_table);
 
     // Origin of the table
     Vector2 origin = {.x = 42, .y = 42};
