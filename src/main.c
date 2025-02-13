@@ -22,6 +22,13 @@ int main()
 
         draw_board(sudoku_table, origin);
 
+        DrawText("(F1) Solve from current state", 10, 10, 16, DARKGRAY);
+
+        if (IsKeyPressed(KEY_F1))
+        {
+            solve(sudoku_table);
+        }
+
         EndDrawing();
     }
 
