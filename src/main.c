@@ -26,7 +26,7 @@ int main()
 
         if (IsKeyPressed(KEY_F1))
         {
-            solve(sudoku_table);
+            solve(sudoku_table, 0, 0);
         }
 
         EndDrawing();
