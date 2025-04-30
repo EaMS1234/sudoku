@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 // Functions containing the logic for the game
 
 void fill_table(int table[9][9]);
@@ -30,18 +28,32 @@ int solve(int table[9][9], int x, int y)
         x_next = 0;
     }
 
-    for (int i = 1; i <= 9; i++)
+    if (table[x][y] == 0)
     {
-        table[x][y] = i;
-        
-        // Either the last number is valid, or the next iterations are all valid
-        if ((x == 8 && y == 8 && valid(table, x, y)) || (valid(table, x, y) && solve(table, x_next, y_next)))
+        for (int i = 1; i <= 9; i++)
+        {
+            table[x][y] = i;
+            
+            // Either the last number is valid, or the next iterations are all valid
+            if ((x == 8 && y == 8 && valid(table, x, y)) || (valid(table, x, y) && solve(table, x_next, y_next)))
+            {
+                return 1;
+            }
+        }
+
+        table[x][y] = 0;  // Nullifies the current number in case no option is valid
+        return 0;         // Returns false
+    }
+    else
+    {
+        // Assumes every number that is already present in the table to be valid
+
+        if (x == 8 && y == 8 || solve(table, x_next, y_next))
         {
             return 1;
         }
     }
 
-    table[x][y] = 0;
     return 0;
 }
 
