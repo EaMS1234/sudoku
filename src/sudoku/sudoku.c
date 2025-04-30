@@ -1,17 +1,50 @@
 // Functions containing the logic for the game
 
-void fill_table(int table[9][9]);
+#include <stdlib.h>
+#include <time.h>
+
+void fill_table(int table[9][9], int difficulty);
 int solve(int table[9][9], int x, int y);
 int valid(int table[9][9], int x, int y);
 
-// TODO: generate a valid sudoku board
-void fill_table(int table[9][9])
+// Generates a valid sudoku board. Not optimal, but it works well enough
+void fill_table(int table[9][9], int difficulty)
 {
+    int x, y, n;
+
+    srand(time(NULL));
+
+    // First step: generate an empty board
     for (int i = 0; i < 9; i++)
     {
         for (int j = 0; j < 9; j++)
         {
             table[i][j] = 0;
+        }
+    }
+
+    // Second step: generate random numbers
+    for (int i = 0; i < 9; i++)
+    {
+        table[rand() % 3][rand() % 3] = i + 1;
+        table[rand() % 3 + 3][rand() % 3 + 3] = i + 1;
+        table[rand() % 3 + 6][rand() % 3 + 6] = i + 1;
+    }
+
+    // Third step: generate a valid final state
+    solve(table, 0, 0);
+
+    // Fourth step: generate a random pattern of empty numbers
+    n = 0;
+    while (n < difficulty)
+    {
+        x = rand() % 9;
+        y = rand() % 9;
+
+        if (table[x][y] != 0)
+        {
+            n++;
+            table[x][y] = 0;
         }
     }
 }

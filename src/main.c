@@ -2,8 +2,6 @@
 #include "board/board.h"
 #include "sudoku/sudoku.h"
 
-#include <stdio.h>
-
 int main()
 {
     InitWindow(490, 490, "Sudoku");
@@ -12,7 +10,7 @@ int main()
     int sudoku_table[9][9];  // represents the number in each position of the board
 
     // Initializes the table
-    fill_table(sudoku_table);
+    fill_table(sudoku_table, 45);
 
     // Origin of the table
     Vector2 origin = {.x = 42, .y = 42};
@@ -28,7 +26,7 @@ int main()
 
         if (IsKeyPressed(KEY_F1))
         {
-            printf("%d\n", solve(sudoku_table, 0, 0));
+            solve(sudoku_table, 0, 0);
         }
 
         EndDrawing();
