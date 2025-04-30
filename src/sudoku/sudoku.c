@@ -30,37 +30,19 @@ int solve(int table[9][9], int x, int y)
         x_next = 0;
     }
 
-    // Final state, or the last number
-    if (x == 8 && y == 8)
+    for (int i = 1; i <= 9; i++)
     {
-        for (int i = 1; i <= 9; i++)
-        {
-            table[x][y] = i;
-
-            if (valid(table, x, y))
-            {
-                return 1;
-            }
-        }
+        table[x][y] = i;
         
-        table[x][y] = 0;
-        return 0;
-    }
-    else
-    {
-        for (int i = 1; i <= 9; i++)
+        // Either the last number is valid, or the next iterations are all valid
+        if ((x == 8 && y == 8 && valid(table, x, y)) || (valid(table, x, y) && solve(table, x_next, y_next)))
         {
-            table[x][y] = i;
-
-            if (valid(table, x, y) && solve(table, x_next, y_next))
-            {
-                return 1;
-            }
+            return 1;
         }
-
-        table[x][y] = 0;
-        return 0;
     }
+
+    table[x][y] = 0;
+    return 0;
 }
 
 // Checks if a number in a given position is valid
