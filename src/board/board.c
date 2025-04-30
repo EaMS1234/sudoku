@@ -1,7 +1,7 @@
 #include "raylib.h"
 #include <stdio.h>
 
-void draw_board(int table[9][9], Vector2 origin);
+void draw_board(int table[9][9], int initial[9][9], Vector2 origin);
 
 // std is for moving and selecting numbers on the board.
 // entry is for inputing numbers on the board.
@@ -14,7 +14,7 @@ enum state
 char label[] = "\0";
 Vector2 position = {.x = -1, .y = -1};
 
-void draw_board(int table[9][9], Vector2 origin)
+void draw_board(int table[9][9], int initial[9][9], Vector2 origin)
 {
     // Key Inputs =========================================================
     if (position.x == -1)
@@ -53,11 +53,12 @@ void draw_board(int table[9][9], Vector2 origin)
 
     int n = GetKeyPressed();
 
-    if (n == KEY_BACKSPACE)
+    // Only allows deleting/changing a number only if it is not part of the initial state
+    if (n == KEY_BACKSPACE && initial[(int)position.x][(int)position.y] == 0)
     {
         table[(int)position.x][(int)position.y] = 0;
     }
-    else if (n >= 49 && n <= 57)
+    else if (n >= 49 && n <= 57 && initial[(int)position.x][(int)position.y] == 0)
     {
         table[(int)position.x][(int)position.y] = n - 48;
     }
@@ -114,7 +115,7 @@ void draw_board(int table[9][9], Vector2 origin)
                 }
 
                 label[0] = (char)(48 + table[i][j]);
-                DrawText(label, (origin.x + 16) + (45 * i), (origin.y + 13) + (45 * j), 24, BLACK);
+                DrawText(label, (origin.x + 16) + (45 * i), (origin.y + 13) + (45 * j), 24, (initial[i][j] != 0 ? BLACK : DARKGRAY));
             }
         }
     }
